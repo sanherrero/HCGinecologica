@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}Editar Paciente - {{ paciente.nombre }} {{ paciente.apellido }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="bi bi-pencil"></i> Editar Datos de Paciente</h2>
+        <p class="text-muted">Paciente: <strong>{{ paciente.nombre }} {{ paciente.apellido }}</strong></p>
+    </div>
+    <div class="col-auto">
+        <a href="/paciente/{{ paciente.id }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Datos Personales</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                    <input type="text" name="nombre" class="form-control" 
+                           value="{{ paciente.nombre }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Apellido <span class="text-danger">*</span></label>
+                    <input type="text" name="apellido" class="form-control" 
+                           value="{{ paciente.apellido }}" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">DNI</label>
+                    <input type="text" name="dni" class="form-control" 
+                           value="{{ paciente.dni or '' }}" placeholder="Ej: 12345678">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" name="fecha_nacimiento" class="form-control" 
+                           value="{{ paciente.fecha_nacimiento or '' }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Teléfono</label>
+                    <input type="tel" name="telefono" class="form-control" 
+                           value="{{ paciente.telefono or '' }}" placeholder="Ej: 11-1234-5678">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" name="direccion" class="form-control" 
+                           value="{{ paciente.direccion or '' }}" placeholder="Calle y número">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <a href="/paciente/{{ paciente.id }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check-circle"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

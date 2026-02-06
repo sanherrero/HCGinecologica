@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ 'Editar' if paciente else 'Nueva' }} Paciente - Historia Clínica{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>
+            <i class="bi bi-person-{{ 'gear' if paciente else 'plus' }}"></i> 
+            {{ 'Editar Paciente' if paciente else 'Registrar Nueva Paciente' }}
+        </h2>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('ver_paciente', id=paciente.id) if paciente else url_for('index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Cancelar
+        </a>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('editar_paciente', id=paciente.id) if paciente else url_for('nueva_paciente') }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nombre *</label>
+                    <input type="text" name="nombre" class="form-control" required 
+                           value="{{ paciente.nombre if paciente else (form_data.nombre if form_data else request.args.get('nombre', '')) }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Apellido *</label>
+                    <input type="text" name="apellido" class="form-control" required 
+                           value="{{ paciente.apellido if paciente else (form_data.apellido if form_data else request.args.get('apellido', '')) }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">DNI</label>
+                    <input type="text" name="dni" class="form-control" 
+                           value="{{ (paciente.dni or '') if paciente else (form_data.dni if form_data else request.args.get('dni', '')) }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" name="fecha_nacimiento" class="form-control" 
+                           value="{{ paciente.fecha_nacimiento if paciente else (form_data.fecha_nacimiento if form_data else '') }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Teléfono</label>
+                    <input type="text" name="telefono" class="form-control" 
+                           value="{{ paciente.telefono if paciente else (form_data.telefono if form_data else '') }}">
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" name="direccion" class="form-control" 
+                           value="{{ paciente.direccion if paciente else (form_data.direccion if form_data else '') }}">
+                </div>
+
+                <!-- Nuevos Datos Demográficos -->
+                <div class="col-12"><hr></div>
+                <div class="col-md-4">
+                    <label class="form-label">Ocupación</label>
+                    <input type="text" name="ocupacion" class="form-control" 
+                           value="{{ paciente.ocupacion if paciente else '' }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Obra Social / Cobertura</label>
+                    <input type="text" name="obra_social" class="form-control" 
+                           value="{{ paciente.obra_social if paciente else '' }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">N° de Afiliado</label>
+                    <input type="text" name="numero_afiliado" class="form-control" 
+                           value="{{ paciente.numero_afiliado if paciente else '' }}">
+                </div>
+
+                <!-- Antecedentes Fijos -->
+                <div class="col-12"><h5 class="mt-3 text-primary">Antecedentes</h5></div>
+                <div class="col-md-6">
+                    <label class="form-label">Personales</label>
+                    <textarea name="antecedentes_personales" class="form-control" rows="2">{{ paciente.antecedentes_personales if paciente else '' }}</textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Medicación Habitual</label>
+                    <textarea name="medicacion_habitual" class="form-control" rows="2">{{ paciente.medicacion_habitual if paciente else '' }}</textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Familiares</label>
+                    <textarea name="antecedentes_familiares" class="form-control" rows="2">{{ paciente.antecedentes_familiares if paciente else '' }}</textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Quirúrgicos</label>
+                    <textarea name="antecedentes_quirurgicos" class="form-control" rows="2">{{ paciente.antecedentes_quirurgicos if paciente else '' }}</textarea>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Alergias</label>
+                    <input type="text" name="alergias" class="form-control" value="{{ paciente.alergias if paciente else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">TBQ (Tabaco)</label>
+                    <input type="text" name="habitos_tbq" class="form-control" value="{{ paciente.habitos_tbq if paciente else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Actividad Física</label>
+                    <input type="text" name="habitos_act_fisica" class="form-control" value="{{ paciente.habitos_act_fisica if paciente else '' }}">
+                </div>
+
+                <!-- Ginecológicos -->
+                <div class="col-12"><h5 class="mt-3 text-primary">Ginecológicos</h5></div>
+                <div class="col-md-3">
+                    <label class="form-label">RM (Ritmo)</label>
+                    <input type="text" name="ginecologicos_rm" class="form-control" value="{{ paciente.ginecologicos_rm if paciente else '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Pareja</label>
+                    <input type="text" name="ginecologicos_pareja" class="form-control" value="{{ paciente.ginecologicos_pareja if paciente else '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">MAC (Método)</label>
+                    <input type="text" name="ginecologicos_mac" class="form-control" value="{{ paciente.ginecologicos_mac if paciente else '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Cuello (Historial)</label>
+                    <input type="text" name="ginecologicos_cuello" class="form-control" value="{{ paciente.ginecologicos_cuello if paciente else '' }}">
+                </div>
+
+                <!-- Obstétricos -->
+                <div class="col-12"><h5 class="mt-3 text-primary">Obstétricos</h5></div>
+                <div class="col-md-3">
+                    <label class="form-label">Gestas</label>
+                    <input type="text" name="obstetricos_gestas" class="form-control" value="{{ paciente.obstetricos_gestas if paciente else '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Paridad</label>
+                    <input type="text" name="obstetricos_paridad" class="form-control" value="{{ paciente.obstetricos_paridad if paciente else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Pesos Fetales</label>
+                    <input type="text" name="obstetricos_pesos_fetales" class="form-control" value="{{ paciente.obstetricos_pesos_fetales if paciente else '' }}">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Patologías Gestacionales</label>
+                    <textarea name="obstetricos_patologias" class="form-control" rows="2">{{ paciente.obstetricos_patologias if paciente else '' }}</textarea>
+                </div>
+                <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> {{ 'Guardar Cambios' if paciente else 'Guardar Paciente' }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

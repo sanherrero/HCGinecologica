@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ 'Editar' if consulta else 'Nueva' }} Consulta - {{ paciente.nombre }} {{ paciente.apellido }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="bi bi-clipboard-{{ 'check' if consulta else 'plus' }}"></i> {{ 'Editar' if consulta else 'Nueva' }} Consulta</h2>
+        <p class="text-muted">Paciente: <strong>{{ paciente.nombre }} {{ paciente.apellido }}</strong></p>
+    </div>
+    <div class="col-auto">
+        <a href="/paciente/{{ paciente.id }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Datos de la Consulta</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Fecha de Consulta</label>
+                    <input type="date" name="fecha_consulta" class="form-control" required value="{{ consulta.fecha_consulta if consulta else '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">FUM</label>
+                    <input type="date" name="fum" class="form-control" value="{{ consulta.fum if consulta else '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">MAC (Método Anticonceptivo)</label>
+                    <input type="text" name="mac" class="form-control" value="{{ consulta.mac if consulta else '' }}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Motivo de Consulta</label>
+                <textarea name="motivo_consulta" class="form-control" rows="3" 
+                          placeholder="Describa el motivo principal de la consulta">{{ consulta.motivo_consulta if consulta else '' }}</textarea>
+            </div>
+
+            <!-- Examen Físico -->
+            <div class="card mb-3 bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Examen Físico</h6>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Tensión Arterial</label>
+                            <input type="text" name="tension_arterial" class="form-control" value="{{ consulta.tension_arterial if consulta else '' }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Peso</label>
+                            <input type="text" name="peso" class="form-control" value="{{ consulta.peso if consulta else '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">General</label>
+                            <input type="text" name="ef_general" class="form-control" value="{{ consulta.ef_general if consulta else '' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Mamas</label>
+                            <textarea name="ef_mamas" class="form-control" rows="2">{{ consulta.ef_mamas if consulta else '' }}</textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Vulva</label>
+                            <textarea name="ef_vulva" class="form-control" rows="2">{{ consulta.ef_vulva if consulta else '' }}</textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Cuello</label>
+                            <textarea name="ef_cuello" class="form-control" rows="2">{{ consulta.ef_cuello if consulta else '' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Obstétrico -->
+            <div class="card mb-3 bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Control Obstétrico</h6>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">AU (Altura Uterina)</label>
+                            <input type="text" name="obs_au" class="form-control" value="{{ consulta.obs_au if consulta else '' }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">LCF (Latidos)</label>
+                            <input type="text" name="obs_lcf" class="form-control" value="{{ consulta.obs_lcf if consulta else '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Ecografía</label>
+                            <input type="text" name="obs_ecografia" class="form-control" value="{{ consulta.obs_ecografia if consulta else '' }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Laboratorio</label>
+                            <textarea name="obs_laboratorio" class="form-control" rows="2">{{ consulta.obs_laboratorio if consulta else '' }}</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Solicito</label>
+                            <textarea name="obs_solicito" class="form-control" rows="2">{{ consulta.obs_solicito if consulta else '' }}</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Indico</label>
+                            <textarea name="obs_indico" class="form-control" rows="2">{{ consulta.obs_indico if consulta else '' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Diagnóstico</label>
+                <textarea name="diagnostico" class="form-control" rows="3" 
+                          placeholder="Diagnóstico principal y secundarios">{{ consulta.diagnostico if consulta else '' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tratamiento</label>
+                <textarea name="tratamiento" class="form-control" rows="4" 
+                          placeholder="Medicamentos prescritos, indicaciones, etc.">{{ consulta.tratamiento if consulta else '' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Observaciones</label>
+                <textarea name="observaciones" class="form-control" rows="3" 
+                          placeholder="Notas adicionales, seguimiento, etc.">{{ consulta.observaciones if consulta else '' }}</textarea>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a href="/paciente/{{ paciente.id }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check-circle"></i> {{ 'Actualizar' if consulta else 'Guardar' }} Consulta
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
