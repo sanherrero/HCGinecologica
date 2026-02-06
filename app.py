@@ -1,5 +1,4 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, send_from_directory
-from flask_cors import CORS
+from flask import Flask, request, render_template, redirect, url_for, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import sys
@@ -20,15 +19,8 @@ else:
     app = Flask(__name__)
     application_path = os.path.dirname(os.path.abspath(__file__))
 
-# --- Configuración de CORS ---
-# Permite peticiones desde el puerto de desarrollo de React (usualmente 3000)
-# En producción, deberías cambiar esto por el dominio real de tu React
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
-# También se puede usar CORS(app) para permitir todos los orígenes en desarrollo,
-# pero es mejor ser explícito.
-
 # --- Configuración de Base de Datos ---
-# Configura una base de datos SQLite temporal. La cambiaremos por Postgres/MySQL más tarde.
+# Configura una base de datos SQLite temporal. 
 db_path = os.path.join(application_path, 'pacientes.db')
 upload_folder = os.path.join(application_path, 'uploads')
 os.makedirs(upload_folder, exist_ok=True)
@@ -40,9 +32,8 @@ app.secret_key = 'clave_secreta_super_segura' # Necesario para mensajes flash
 
 db = SQLAlchemy(app)
 
-# ----------------------------------------------------
-# 5. Definición del Modelo (Equivalente a la clase Paciente.java)
-# ----------------------------------------------------
+# Definición del Modelo
+
 class Paciente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(80), nullable=False)
@@ -116,9 +107,9 @@ class Archivo(db.Model):
     descripcion = db.Column(db.String(200))
     fecha_subida = db.Column(db.DateTime, default=db.func.current_timestamp())
 
-# ----------------------------------------------------
-# 6. Definición de las Rutas (Endpoints API)
-# ----------------------------------------------------
+
+# Definición de las Rutas (Endpoints API)
+
 @app.route('/', methods=['GET'])
 def index():
     # Obtener parámetros de búsqueda y ordenamiento
@@ -366,9 +357,9 @@ def eliminar_archivo(id):
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-# ----------------------------------------------------
-# 7. Ejecución de la Aplicación
-# ----------------------------------------------------
+
+# Ejecución de la Aplicación
+
 if __name__ == '__main__':
     # Crea la base de datos y la tabla Paciente si no existen
     with app.app_context():
