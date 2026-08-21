@@ -40,9 +40,9 @@ if errorlevel 1 (
 REM Ejecutar la aplicacion
 echo.
 echo Iniciando aplicacion...
-echo Abre tu navegador en: http://127.0.0.1:5000
+echo Abre tu navegador en: http://127.0.0.1:5001/login
 echo Presiona Ctrl+C para detener la aplicacion
 echo.
-python app.py
+python wsgi.py
 
 pause

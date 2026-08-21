@@ -6,9 +6,9 @@ from .extensions import db, migrate
 
 def create_app(config_object=None):
     """Application factory."""
-    # Apunta a la carpeta templates en la raíz del proyecto para mantener compatibilidad
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    template_folder = os.path.join(project_root, 'templates')
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.abspath(os.path.join(app_dir, '..'))
+    template_folder = os.path.join(app_dir, 'templates')
 
     app = Flask(__name__, template_folder=template_folder)
 
@@ -27,16 +27,20 @@ def create_app(config_object=None):
     os.makedirs(upload_folder, exist_ok=True)
 
     # Registrar blueprints
+    from .routes.auth import bp as auth_bp
     from .routes.pacientes import bp as pacientes_bp
     from .routes.consultas import bp as consultas_bp
     from .routes.archivos import bp as archivos_bp
 
+    app.register_blueprint(auth_bp)
     app.register_blueprint(pacientes_bp)
     app.register_blueprint(consultas_bp)
     app.register_blueprint(archivos_bp)
 
     @app.shell_context_processor
     def make_shell_context():
-        return {'db': db}
+        from .models import User, Paciente, Consulta, Archivo
+        return {'db': db, 'User': User, 'Paciente': Paciente, 'Consulta': Consulta, 'Archivo': Archivo}
 
     return app
+

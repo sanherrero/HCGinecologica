@@ -1,4 +1,19 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from .extensions import db
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 
 class Paciente(db.Model):
     __tablename__ = 'paciente'
@@ -6,7 +21,7 @@ class Paciente(db.Model):
     nombre = db.Column(db.String(80), nullable=False)
     apellido = db.Column(db.String(80), nullable=False)
     dni = db.Column(db.String(15), unique=True, nullable=True)
-    fecha_nacimiento = db.Column(db.Date)
+    fecha_nacimiento = db.Column(db.String(20))
     telefono = db.Column(db.String(20))
     direccion = db.Column(db.String(200))
     ocupacion = db.Column(db.String(100))
@@ -34,11 +49,12 @@ class Paciente(db.Model):
     consultas = db.relationship('Consulta', backref='paciente', lazy=True, cascade="all, delete-orphan")
     archivos = db.relationship('Archivo', backref='paciente', lazy=True, cascade="all, delete-orphan")
 
+
 class Consulta(db.Model):
     __tablename__ = 'consulta'
     id = db.Column(db.Integer, primary_key=True)
     paciente_id = db.Column(db.Integer, db.ForeignKey('paciente.id'), nullable=False)
-    fecha_consulta = db.Column(db.Date)
+    fecha_consulta = db.Column(db.String(20))
     peso = db.Column(db.String(20))
     tension_arterial = db.Column(db.String(20))
     ef_general = db.Column(db.Text)
@@ -57,6 +73,7 @@ class Consulta(db.Model):
     diagnostico = db.Column(db.Text)
     tratamiento = db.Column(db.Text)
     observaciones = db.Column(db.Text)
+
 
 class Archivo(db.Model):
     __tablename__ = 'archivo'

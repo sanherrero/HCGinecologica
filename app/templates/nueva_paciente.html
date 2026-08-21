@@ -11,7 +11,7 @@
         </h2>
     </div>
     <div class="col-auto">
-        <a href="{{ url_for('ver_paciente', id=paciente.id) if paciente else url_for('index') }}" class="btn btn-secondary">
+        <a href="{{ url_for('pacientes.ver_paciente', id=paciente.id) if paciente else url_for('pacientes.index') }}" class="btn btn-secondary">
             <i class="bi bi-arrow-left"></i> Cancelar
         </a>
     </div>
@@ -19,7 +19,7 @@
 
 <div class="card shadow">
     <div class="card-body">
-        <form method="POST" action="{{ url_for('editar_paciente', id=paciente.id) if paciente else url_for('nueva_paciente') }}">
+        <form method="POST" action="{{ url_for('pacientes.editar_paciente', id=paciente.id) if paciente else url_for('pacientes.nueva_paciente') }}">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Nombre *</label>
